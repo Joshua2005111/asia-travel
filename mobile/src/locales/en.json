@@ -1,0 +1,68 @@
+{
+  "nav": {
+    "home": "Home",
+    "translate": "Translate",
+    "maps": "Maps",
+    "booking": "Booking",
+    "profile": "Profile"
+  },
+  "home": {
+    "welcome": "Welcome to China!",
+    "subtitle": "Your guide to exploring China",
+    "emergency": "Emergency Call",
+    "quick_actions": "Quick Actions"
+  },
+  "translate": {
+    "title": "AI Translator",
+    "input_hint": "Enter text to translate...",
+    "result": "Translation",
+    "enter_text": "Please enter some text to translate",
+    "copied": "Copied to clipboard"
+  },
+  "maps": {
+    "title": "Map & Navigation",
+    "search": "Search places...",
+    "nearby": "Nearby",
+    "directions": "Directions"
+  },
+  "booking": {
+    "title": "Book Tickets",
+    "train": "Train",
+    "flight": "Flight",
+    "hotel": "Hotel"
+  },
+  "profile": {
+    "title": "Profile",
+    "settings": "Settings",
+    "language": "Language",
+    "emergency_contact": "Emergency Contact",
+    "history": "Translation History",
+    "saved_places": "Saved Places",
+    "logout": "Logout"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "confirm_password": "Confirm Password",
+    "phone": "Phone Number (Optional)",
+    "passport_id": "Passport ID (Optional)",
+    "welcome_back": "Welcome Back!",
+    "create_account": "Create Your Account",
+    "error": "Error",
+    "fill_all_fields": "Please fill in all required fields",
+    "passwords_not_match": "Passwords do not match",
+    "password_too_short": "Password must be at least 6 characters",
+    "login_failed": "Login failed. Please check your credentials.",
+    "registration_failed": "Registration failed. Please try again.",
+    "forgot_password": "Forgot Password?",
+    "or_continue": "Or continue with",
+    "no_account": "Don't have an account?",
+    "sign_up": "Sign Up",
+    "have_account": "Already have an account?",
+    "login_link": "Login",
+    "agree_terms": "I agree to the",
+    "terms_of_service": "Terms of Service"
+  }
+}

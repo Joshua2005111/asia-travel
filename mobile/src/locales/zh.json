@@ -1,0 +1,68 @@
+{
+  "nav": {
+    "home": "首页",
+    "translate": "翻译",
+    "maps": "地图",
+    "booking": "预订",
+    "profile": "我的"
+  },
+  "home": {
+    "welcome": "欢迎来到中国！",
+    "subtitle": "您的中国之旅指南",
+    "emergency": "紧急求助",
+    "quick_actions": "快捷功能"
+  },
+  "translate": {
+    "title": "AI翻译",
+    "input_hint": "输入要翻译的文字...",
+    "result": "翻译结果",
+    "enter_text": "请输入要翻译的文字",
+    "copied": "已复制到剪贴板"
+  },
+  "maps": {
+    "title": "地图导航",
+    "search": "搜索地点...",
+    "nearby": "附近",
+    "directions": "路线"
+  },
+  "booking": {
+    "title": "预订门票",
+    "train": "火车",
+    "flight": "飞机",
+    "hotel": "酒店"
+  },
+  "profile": {
+    "title": "个人中心",
+    "settings": "设置",
+    "language": "语言",
+    "emergency_contact": "紧急联系人",
+    "history": "翻译历史",
+    "saved_places": "收藏地点",
+    "logout": "退出登录"
+  },
+  "auth": {
+    "login": "登录",
+    "register": "注册",
+    "email": "邮箱",
+    "password": "密码",
+    "confirm_password": "确认密码",
+    "phone": "手机号码（可选）",
+    "passport_id": "护照号码（可选）",
+    "welcome_back": "欢迎回来！",
+    "create_account": "创建您的账户",
+    "error": "错误",
+    "fill_all_fields": "请填写所有必填项",
+    "passwords_not_match": "两次输入的密码不一致",
+    "password_too_short": "密码至少需要6个字符",
+    "login_failed": "登录失败，请检查您的账号和密码。",
+    "registration_failed": "注册失败，请重试。",
+    "forgot_password": "忘记密码？",
+    "or_continue": "或使用以下方式登录",
+    "no_account": "还没有账户？",
+    "sign_up": "立即注册",
+    "have_account": "已有账户？",
+    "login_link": "登录",
+    "agree_terms": "我已阅读并同意",
+    "terms_of_service": "服务条款"
+  }
+}
