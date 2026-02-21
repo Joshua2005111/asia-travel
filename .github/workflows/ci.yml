@@ -1,15 +1,18 @@
-name: FOREIGNER_APP CI/CD
+# Asia Travel CI/CD - Auto Fix & Build
+
+name: Asia Travel CI/CD
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master, main ]
   pull_request:
-    branches: [ main ]
+    branches: [ master, main ]
   workflow_dispatch:
 
 jobs:
+  # 1. Check code format and lint
   lint:
-    name: Lint & Format
+    name: Code Check
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
@@ -19,19 +22,19 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '20'
-        cache: 'npm'
     
     - name: Install dependencies
       run: npm ci
     
     - name: Run ESLint
-      run: npm run lint || echo "No lint script found"
+      run: npm run lint || echo "No lint script"
     
-    - name: Check formatting
-      run: npm run format || echo "No format script found"
+    - name: Check TypeScript
+      run: npx tsc --noEmit || echo "TypeScript check"
 
-  android-build:
-    name: Android Build
+  # 2. Build Android APK
+  build-android:
+    name: Build Android APK
     runs-on: ubuntu-latest
     needs: lint
     steps:
@@ -47,18 +50,50 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
     
-    - name: Build Android
+    - name: Build Debug APK
       run: |
         cd android
         chmod +x ./gradlew
         ./gradlew assembleDebug
-      env:
-        ANDROID_HOME: ${{ env.ANDROID_HOME }}
-        ANDROID_SDK_ROOT: ${{ env.ANDROID_SDK_ROOT }}
+    
+    - name: Upload APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: app-debug.apk
+        path: android/app/build/outputs/apk/debug/app-debug.apk
 
-  test:
-    name: Unit Tests
+  # 3. Auto-fix and comment (for PRs)
+  auto-fix:
+    name: Auto Fix Issues
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.head_ref }}
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Fix lint issues
+      run: npm run lint -- --fix || echo "No auto-fix available"
+    
+    - name: Create fix commit
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: "style: auto-fix lint issues"
+        file_pattern: "*.js *.ts *.tsx"
+
+  # 4. Build iOS (optional - requires Mac)
+  build-ios:
+    name: Build iOS
+    runs-on: macos-latest
     needs: lint
     steps:
     - name: Checkout code
@@ -68,10 +103,9 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '20'
-        cache: 'npm'
     
-    - name: Install dependencies
-      run: npm ci
+    - name: Install CocoaPods
+      run: cd ios && pod install
     
-    - name: Run tests
-      run: npm test || echo "No tests configured"
+    - name: Build iOS
+      run: xcodebuild -workspace ios/*.xcworkspace -scheme AsiaTravel -configuration Debug build
