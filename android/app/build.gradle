@@ -5,11 +5,11 @@ import java.util.Properties
 import javax.inject.Inject
 
 android {
-    namespace 'com.anonymous.chinamate'
+    namespace 'com.asiatravel.app'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.anonymous.chinamate"
+        applicationId 'com.asiatravel.app'
         minSdk 24
         targetSdk 34
         versionCode 1
@@ -26,23 +26,47 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
     }
-    
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
-    
+
     kotlinOptions {
         jvmTarget = '17'
     }
-    
+
     // Enable BuildConfig generation
     buildFeatures {
         buildConfig true
     }
+
+    // Fix Redeclaration issue
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/DEPENDENCIES"
+        }
+    }
+
+    // Source sets to avoid conflicts
+    sourceSets {
+        main {
+            java {
+                srcDirs = ['src/main/java']
+            }
+            kotlin {
+                srcDirs = ['src/main/java']
+            }
+        }
+    }
 }
 
 dependencies {
+    // React Native
     implementation "com.facebook.react:react-android:0.73.2"
     implementation "com.facebook.react:hermes-android:0.73.2"
+    
+    // Use JSC instead of Hermes for better compatibility
+    // implementation "org.webkit:android-jsc:r250230"
 }

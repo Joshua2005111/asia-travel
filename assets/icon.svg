@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1024" height="1024" rx="200" fill="#FF6B35"/>
+  
+  <!-- Simple Asia continent outline (stylized) -->
+  <path d="M350 200 
+           C400 180, 480 160, 550 180
+           C650 200, 750 250, 800 320
+           C850 400, 870 500, 850 580
+           C830 660, 780 720, 720 760
+           C660 800, 580 820, 500 810
+           C420 800, 350 760, 300 700
+           C250 640, 220 560, 230 480
+           C240 400, 280 340, 320 290
+           C340 260, 350 220, 350 200Z" 
+        fill="#FFFFFF" opacity="0.95"/>
+  
+  <!-- Simplified Asia shape -->
+  <ellipse cx="520" cy="450" rx="200" ry="250" fill="#FFFFFF"/>
+  
+  <!-- Plane icon -->
+  <path d="M400 450 L550 450 L580 420 L700 500 L580 580 L550 550 L400 550 Z" fill="#FF6B35"/>
+  
+  <!-- Location pin -->
+  <circle cx="520" cy="450" r="30" fill="#FF6B35"/>
+  <circle cx="520" cy="450" r="15" fill="#FFFFFF"/>
+</svg>
