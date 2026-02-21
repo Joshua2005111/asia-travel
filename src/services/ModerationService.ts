@@ -81,7 +81,7 @@ export const moderationService = {
     }
 
     // 3. 检测诱导行为
-    const诱导Patterns = [
+    const inducementPatterns = [
       /点击链接/i,
       /添加微信/i,
       /加我微信/i,
@@ -89,7 +89,7 @@ export const moderationService = {
       /看主页/i,
     ];
 
-    for (const pattern of诱导Patterns) {
+    for (const pattern of inducementPatterns) {
       if (pattern.test(message)) {
         result.flags.push({
           type: 'inducement',
