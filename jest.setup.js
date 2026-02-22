@@ -31,3 +31,6 @@ global.console = {
   warn: jest.fn(),
   error: jest.fn(),
 };
+
+// Mock __DEV__ for React Native
+global.__DEV__ = true;
