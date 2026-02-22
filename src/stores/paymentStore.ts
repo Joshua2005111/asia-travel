@@ -45,6 +45,9 @@ export interface PaymentState {
 
 const STORAGE_KEY = '@payment_methods';
 
+// 支付状态
+export type PaymentStatus = 'idle' | 'processing' | 'success' | 'failed' | 'refunded';
+
 export const usePaymentStore = create<PaymentState>((set, get) => ({
   // 初始状态
   paymentMethods: [],
