@@ -25,7 +25,7 @@ class MainApplication : Application(), ReactApplication {
 
         override fun getJSMainModuleName(): String = "index"
 
-        override fun getUseDeveloperSupport(): Boolean = true
+        override fun getUseDeveloperSupport(): Boolean = false
 
         // Disable New Architecture for simplicity
         override val isNewArchEnabled: Boolean = false
