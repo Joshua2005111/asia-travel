@@ -50,6 +50,12 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
     
+    - name: Install dependencies
+      run: npm install --legacy-peer-deps
+    
+    - name: Generate Android project
+      run: npx expo prebuild --platform android --clean
+    
     - name: Build Debug APK
       run: |
         cd android
@@ -104,8 +110,16 @@ jobs:
       with:
         node-version: '20'
     
+    - name: Install dependencies
+      run: npm install --legacy-peer-deps
+    
+    - name: Generate iOS project
+      run: npx expo prebuild --platform ios --clean
+    
     - name: Install CocoaPods
       run: cd ios && pod install
     
     - name: Build iOS
-      run: xcodebuild -workspace ios/*.xcworkspace -scheme AsiaTravel -configuration Debug build
+      run: |
+        # Build for iOS Simulator
+        xcodebuild -workspace ios/*.xcworkspace -scheme chinemate -configuration Debug build -destination "platform=iOS Simulator,name=iPhone 15"
