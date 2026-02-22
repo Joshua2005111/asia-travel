@@ -22,6 +22,23 @@ export interface UserState {
   updateUser: (updates: Partial<User>) => void;
 }
 
+export interface UserStats {
+  totalTrips: number;
+  totalSpent: number;
+  countriesVisited: number;
+ 翻译次数: number;
+}
+
+export interface Achievement {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  unlockedAt?: Date;
+}
+
+export const ACHIEVEMENTS: Achievement[] = [];
+
 export const useUserStore = create<UserState>((set) => ({
   user: null,
   token: null,
