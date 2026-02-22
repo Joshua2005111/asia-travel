@@ -4,7 +4,7 @@
  */
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { config } from '../config';
+import { config, isDev } from '../config';
 
 // 创建axios实例
 const httpClient: AxiosInstance = axios.create({
@@ -25,7 +25,7 @@ httpClient.interceptors.request.use(
     }
     
     // 开发环境打印请求
-    if (config.isDev) {
+    if (isDev) {
       console.log(`[HTTP] ${requestConfig.method?.toUpperCase()} ${requestConfig.url}`);
     }
     
@@ -40,7 +40,7 @@ httpClient.interceptors.request.use(
 httpClient.interceptors.response.use(
   (response: AxiosResponse) => {
     // 开发环境打印响应
-    if (config.isDev) {
+    if (isDev) {
       console.log(`[HTTP] ${response.status} ${response.config.url}`);
     }
     
