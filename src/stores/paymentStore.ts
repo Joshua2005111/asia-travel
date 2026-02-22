@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert } from 'react-native';
 import bookingAPI from '../services/BookingAPI';
 
-interface PaymentMethod {
+export interface PaymentMethod {
   id: string;
   type: 'wechat' | 'alipay' | 'card';
   name: string;
@@ -12,7 +12,7 @@ interface PaymentMethod {
   isDefault: boolean;
 }
 
-interface PaymentState {
+export interface PaymentState {
   // 支付方式列表
   paymentMethods: PaymentMethod[];
   
