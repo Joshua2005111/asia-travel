@@ -1,0 +1,101 @@
+name: EAS Build
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Install EAS CLI
+        run: npm install -g eas-cli
+
+      - name: Log in to EAS
+        run: eas login --token ${{ secrets.EAS_TOKEN }}
+
+      - name: Build Android APK
+        id: build_android
+        run: eas build --platform android --profile preview --non-interactive
+
+      - name: Build iOS
+        id: build_ios
+        run: eas build --platform ios --profile preview --non-interactive
+
+      - name: Notify Telegram on failure
+        if: failure()
+        run: |
+          JOB_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          ANDROID_STATUS="✅"
+          if [ "${{ steps.build_android.outcome }}" = "failure" ]; then
+            ANDROID_STATUS="❌"
+          fi
+          IOS_STATUS="✅"
+          if [ "${{ steps.build_ios.outcome }}" = "failure" ]; then
+            IOS_STATUS="❌"
+          fi
+          MESSAGE="🚨 *EAS Build 失败* 仓库: \
+          
+        
+        
+          ```${{ github.repository }}```
+          
+        
+        
+          
+          
+          ```${{ github.ref_name }}```
+          
+        
+        
+          
+          
+          ```${{ github.sha }}```
+          
+        
+        
+          Android: ${ANDROID_STATUS} iOS: ${IOS_STATUS} [查看详细错误日志](${JOB_URL}) 请分析错误并自动修复。"
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d parse_mode="Markdown" \
+            -d text="${MESSAGE}"
+      - name: Notify Telegram on success
+        if: success()
+        run: |
+          MESSAGE="✅ *EAS Build 成功* 仓库: \
+            
+          
+        
+          ```${{ github.repository }}```
+          
+        
+        
+          
+          
+          ```${{ github.ref_name }}```
+          
+        
+        
+          
+          
+          ```${{ github.sha }}```
+          
+        
+        
+          王: ${ANDROID_STATUS} iOS: ${IOS_STATUS} [查看详细错误日志](${JOB_URL}) 请分析错误并自动修复。"
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d parse_mode="Markdown" \
+            -d text="${MESSAGE}"
