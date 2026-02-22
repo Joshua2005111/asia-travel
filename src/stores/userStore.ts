@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-interface User {
+export interface User {
   id: string;
   username: string;
   email: string;
@@ -10,7 +10,7 @@ interface User {
   createdAt: Date;
 }
 
-interface UserState {
+export interface UserState {
   user: User | null;
   token: string | null;
   isLoading: boolean;
