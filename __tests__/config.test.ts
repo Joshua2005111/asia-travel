@@ -2,9 +2,6 @@
  * Test for App Config
  */
 
-// Mock __DEV__ 
-global.__DEV__ = true;
-
 const config = require('../src/config').config;
 
 describe('App Config', () => {
