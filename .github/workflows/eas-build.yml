@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      EXPO_TOKEN: ${{ secrets.EAS_TOKEN }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -23,9 +25,6 @@ jobs:
       - name: Install EAS CLI
         run: npm install -g eas-cli
 
-      - name: Log in to EAS
-        run: eas login --token ${{ secrets.EAS_TOKEN }}
-
       - name: Build Android APK
         id: build_android
         run: eas build --platform android --profile preview --non-interactive
@@ -36,66 +35,61 @@ jobs:
 
       - name: Notify Telegram on failure
         if: failure()
+        env:
+          BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          REPO: ${{ github.repository }}
+          BRANCH: ${{ github.ref_name }}
+          SHA: ${{ github.sha }}
+          RUN_ID: ${{ github.run_id }}
+          ANDROID_OUTCOME: ${{ steps.build_android.outcome }}
+          IOS_OUTCOME: ${{ steps.build_ios.outcome }}
         run: |
-          JOB_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          JOB_URL="https://github.com/${REPO}/actions/runs/${RUN_ID}"
+
           ANDROID_STATUS="✅"
-          if [ "${{ steps.build_android.outcome }}" = "failure" ]; then
+          if [ "${ANDROID_OUTCOME}" = "failure" ]; then
             ANDROID_STATUS="❌"
           fi
+
           IOS_STATUS="✅"
-          if [ "${{ steps.build_ios.outcome }}" = "failure" ]; then
+          if [ "${IOS_OUTCOME}" = "failure" ]; then
             IOS_STATUS="❌"
           fi
-          MESSAGE="🚨 *EAS Build 失败* 仓库: \
-          
-        
-        
-          ```${{ github.repository }}```
-          
-        
-        
-          
-          
-          ```${{ github.ref_name }}```
-          
-        
-        
-          
-          
-          ```${{ github.sha }}```
-          
-        
-        
-          Android: ${ANDROID_STATUS} iOS: ${IOS_STATUS} [查看详细错误日志](${JOB_URL}) 请分析错误并自动修复。"
-          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
-            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
-            -d parse_mode="Markdown" \
+
+          MESSAGE="🚨 EAS Build 失败
+
+仓库: ${REPO}
+分支: ${BRANCH}
+提交: ${SHA}
+
+Android: ${ANDROID_STATUS}
+iOS: ${IOS_STATUS}
+
+查看详细错误日志: ${JOB_URL}
+
+请分析错误并自动修复。"
+
+          curl -s -X POST "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" \
+            -d chat_id="${CHAT_ID}" \
             -d text="${MESSAGE}"
+
       - name: Notify Telegram on success
         if: success()
+        env:
+          BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          REPO: ${{ github.repository }}
+          BRANCH: ${{ github.ref_name }}
         run: |
-          MESSAGE="✅ *EAS Build 成功* 仓库: \
-            
-          
-        
-          ```${{ github.repository }}```
-          
-        
-        
-          
-          
-          ```${{ github.ref_name }}```
-          
-        
-        
-          
-          
-          ```${{ github.sha }}```
-          
-        
-        
-          王: ${ANDROID_STATUS} iOS: ${IOS_STATUS} [查看详细错误日志](${JOB_URL}) 请分析错误并自动修复。"
-          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
-            -d chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
-            -d parse_mode="Markdown" \
+          MESSAGE="✅ EAS Build 成功
+
+仓库: ${REPO}
+分支: ${BRANCH}
+
+Android 和 iOS 构建完成，前往 EAS 下载：
+https://expo.dev/accounts/Joshua505050/projects/asia-travel/builds"
+
+          curl -s -X POST "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" \
+            -d chat_id="${CHAT_ID}" \
             -d text="${MESSAGE}"
