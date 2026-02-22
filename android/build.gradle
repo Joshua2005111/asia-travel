@@ -3,10 +3,8 @@ plugins {
     id 'com.android.application' version '9.0.1' apply false
     id 'com.android.library' version '9.0.1' apply false
     id 'org.jetbrains.kotlin.android' version '2.2.10' apply false
-    id 'com.facebook.react' version 'x.x.x' apply false // 添加这个插件的版本
+    id 'com.facebook.react' version '0.63.4' apply false // 确保您有具体版本
 }
-
-// repositories are now managed by settings.gradle's dependencyResolutionManagement
 
 task clean(type: Delete) {
     delete rootProject.buildDir
