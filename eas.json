@@ -5,8 +5,7 @@
   "build": {
     "preview": {
       "android": {
-        "buildType": "apk",
-        "cli.appVersionSource": "local"
+        "buildType": "apk"
       },
       "ios": {
         "simulator": true
