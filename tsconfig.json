@@ -16,7 +16,8 @@
       "@/*": ["src/*"]
     },
     "isolatedModules": true,
-    "noEmit": true
+    "noEmit": true,
+    "types": ["jest", "node"]
   },
   "include": ["src/**/*", "__tests__/**/*"],
   "exclude": ["node_modules"]
