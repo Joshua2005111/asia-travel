@@ -1,0 +1,53 @@
+name: EAS Build
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      EXPO_TOKEN: ${{ secrets.EAS_TOKEN }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Install EAS CLI
+        run: npm install -g eas-cli
+
+      - name: Build Android APK
+        id: build_android
+        run: eas build --platform android --profile preview --non-interactive
+
+      - name: Build iOS
+        id: build_ios
+        run: eas build --platform ios --profile preview --non-interactive
+
+      - name: Notify Telegram on failure
+        if: failure()
+        run: |
+          BOT_TOKEN="${{ secrets.TELEGRAM_BOT_TOKEN }}"
+          CHAT_ID="${{ secrets.TELEGRAM_CHAT_ID }}"
+          JOB_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          curl -s -X POST "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${CHAT_ID}" \
+            --data-urlencode "text=EAS Build failed. Repo: ${{ github.repository }} Branch: ${{ github.ref_name }} Log: ${JOB_URL}"
+
+      - name: Notify Telegram on success
+        if: success()
+        run: |
+          BOT_TOKEN="${{ secrets.TELEGRAM_BOT_TOKEN }}"
+          CHAT_ID="${{ secrets.TELEGRAM_CHAT_ID }}"
+          curl -s -X POST "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${CHAT_ID}" \
+            --data-urlencode "text=EAS Build success. Repo: ${{ github.repository }} Branch: ${{ github.ref_name }} Download: https://expo.dev/accounts/Joshua505050/projects/asia-travel/builds"
